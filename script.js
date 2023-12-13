@@ -1,10 +1,10 @@
 const selectTags = document.querySelectorAll('select');
 
 selectTags.forEach((tag, id) => {
-    for (let country_code in languages) {
-        let selected = id === 0 ? (country_code === "en" ? "selected" : "") : (country_code === "es" ? "selected" : "");
+    for (let country_code in language) {
+        let selected = id === 0 ? (country_code === "en" ? "selected" : "") : (country_code === "pa" ? "selected" : "");
 
-        let option = `<option ${selected} value="${country_code}">${languages[country_code]}</option>`;
+        let option = `<option ${selected} value="${country_code}">${language[country_code]}</option>`;
         tag.insertAdjacentHTML("beforeend", option);
     }
 });
@@ -36,3 +36,16 @@ function translateText(inputText, fromLanguage, toLanguage){
 function removeQuestionMarks(text) {
     return text.replace(/^¿+|¿+$/g, '');
 }
+
+function speakText(text) {
+    const speechSynthesis = window.speechSynthesis;
+    const speechUtterance = new SpeechSynthesisUtterance(text);
+    speechUtterance.lang = document.getElementById('translateTo').value;
+
+    speechSynthesis.speak(speechUtterance);
+}
+
+document.getElementById('speakBtn').addEventListener('click', function () {
+    const translatedText = document.getElementById('outputText').innerText;
+    speakText(translatedText);
+});
